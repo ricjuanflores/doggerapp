@@ -118,7 +118,6 @@ def createReservation(request):
     dogs = Dog.objects.filter(id__in=data['dogs'])
     hour_start  = data['hour_start']
     hour_finish = data['hour_finish']
-    #status = data["status"]
 
     if validate_limite_dogs(user, data, type_service):
         if data['walker']:
