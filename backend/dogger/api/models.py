@@ -5,8 +5,6 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     is_walker   = models.BooleanField(default=False)
     is_owner    = models.BooleanField(default=False)
-    #city       = models.ForeignKey('City', on_delete=models.CASCADE, null=True, blank=True)
-    #address    = models.TextField(null=True, blank=True)
 
     class Meta:
         default_permissions = ('add', 'change', 'delete', 'view')
@@ -23,7 +21,6 @@ class Dog(models.Model):
     )
     name    = models.CharField(max_length=70)
     size    = models.PositiveSmallIntegerField(choices=DOG_SIZE)
-    #breed  = models.CharField(max_length=100)
     owner   = models.ForeignKey('User', related_name='owner_dog', on_delete=models.CASCADE)
 
     def __str__(self):
