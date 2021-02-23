@@ -1,5 +1,46 @@
 # doggerapp
 
+Installation
+------------
+
+Ubuntu 18.04
+
+Packages
+```
+$ sudo apt-get install python-pip
+$ sudo apt install virtualenv
+
+```
+
+Environment
+
+```
+# Install virtualenv
+$ virtualenv -p python venv
+
+# Activate virturalenv
+$ source venv/bin/activate
+```
+
+Install requeriments
+
+```
+$ pip install -r requeriments.txt
+```
+
+
+Run migrations
+
+```
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
+
+
+Run local
+```
+$ python manage.py runserver
+```
 
 ## API - POSTMAN:
 
