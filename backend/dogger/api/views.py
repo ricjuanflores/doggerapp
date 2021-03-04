@@ -115,27 +115,32 @@ def createReservation(request):
     user = request.user
     type_service = 1
     dogs = Dog.objects.filter(id__in=data['dogs'])
+    date = data["date"]
     hour_start  = data['hour_start']
-    hour_finish = data['hour_finish']
+    time_service = data['time_service']
+    #hour_finish = data['hour_finish']
 
     if validate_limite_dogs(user, data, type_service):
-        if data['walker']:
-            walker_id = data['walker']
-            walker = User.objects.get(id=walker_id)
-            service = Service.objects.create(
-                type = type_service, #reservation 
-                hour_start = hour_start,
-                hour_finish = hour_finish,
-                walker = walker,
-                owner = user
-            )
-            service.dogs.add(*dogs)
+        print("validando bien")
 
-            serializer = ServiceSerializer(service, many=False)
-            return Response(serializer.data)
+        # if data['walker']:
+        #     walker_id = data['walker']
+        #     walker = User.objects.get(id=walker_id)
+        #     service = Service.objects.create(
+        #         type = type_service, #reservation 
+        #         date = date,
+        #         hour_start = hour_start,
+        #         time_service = time_service,
+        #         walker = walker,
+        #         owner = user
+        #     )
+        #     service.dogs.add(*dogs)
+
+        #     serializer = ServiceSerializer(service, many=False)
+        #     return Response(serializer.data)
     else:
         message = {'detail':'Solo puedes asignar hasta 3 perros por hora'}
-        return Response(message, status= status.HTTP_400_BAD_REQUEST)   
+        return Response(message, status= status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -145,14 +150,18 @@ def createOffer(request):
     user = request.user
 
     dogs = Dog.objects.filter(id__in=data['dogs'])
+    date = data["date"]
     hour_start  = data['hour_start']
-    hour_finish = data['hour_finish']
+    time_service = data['time_service']
+    #hour_finish = data['hour_finish']
     #status = data["status"]
         
     service = Service.objects.create(
         type = 2, #offer
+        date = date,
         hour_start = hour_start,
-        hour_finish = hour_finish,
+        time_service = time_service,
+        #hour_finish = hour_finish,
         owner = user
     )
     service.dogs.add(*dogs)

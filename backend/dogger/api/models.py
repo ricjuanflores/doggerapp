@@ -5,12 +5,12 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     is_walker   = models.BooleanField(default=False)
     is_owner    = models.BooleanField(default=False)
-
+    schedule    = models.ManyToManyField('Schedule', blank = True)
     class Meta:
         default_permissions = ('add', 'change', 'delete', 'view')
 
     def __str__(self):
-        return f'{self.first_name} - {self.email}'
+        return f'{self.first_name} - {self.email} - {self.id}'
 
 
 class Dog(models.Model):
@@ -28,8 +28,7 @@ class Dog(models.Model):
 
 
 class Schedule(models.Model):
-    
-    user        = models.ManyToManyField('User', blank = True)
+     
     small       = models.BooleanField()
     medium      = models.BooleanField()
     big         = models.BooleanField()
@@ -67,21 +66,29 @@ class Service(models.Model):
         (2, 'reject'),
         (3, 'pending')
     )
+    TIME_SERVICE = (
+        (1, '30min'),
+        (2, '1hr')
+    )
 
-    owner       = models.ForeignKey('User', related_name='owner_service', on_delete=models.SET_NULL, null=True, blank=True)
-    type        = models.PositiveSmallIntegerField(choices=SERVICE_TYPE)
-    hour_start  = models.TimeField()
-    hour_finish = models.TimeField()
+    owner           = models.ForeignKey('User', related_name='owner_service', on_delete=models.SET_NULL, null=True, blank=True)
+    type            = models.PositiveSmallIntegerField(choices=SERVICE_TYPE)
+    date            = models.DateField()
+    hour_start      = models.TimeField()
+    #hour_finish     = models.TimeField(null=True, blank=True)
+    time_service    = models.PositiveSmallIntegerField(choices=TIME_SERVICE)
     #schedule    = models.ForeignKey(Schedule, related_name='schedule_service', on_delete=models.SET_NULL, null=True, blank=True)
-    walker      = models.ForeignKey('User', related_name='walker_service', on_delete=models.SET_NULL, null=True, blank=True)
-    dogs        = models.ManyToManyField(Dog, blank = True)
-    status      = models.PositiveSmallIntegerField(choices=SERVICE_STATUS, default=3)
+    walker          = models.ForeignKey('User', related_name='walker_service', on_delete=models.SET_NULL, null=True, blank=True)
+    dogs            = models.ManyToManyField(Dog, blank = True)
+    status          = models.PositiveSmallIntegerField(choices=SERVICE_STATUS, default=3)
 
-    def get_quantity_dogs():
+    def get_quantity_dogs(self):
         return self.dogs.count()
+
+    def hour_finish(self):
+        return 'hour finish'
 
     def __str__(self):
         hour_start = self.hour_start.strftime('%I:%M %p')
-        hour_finish = self.hour_finish.strftime('%I:%M %p')
-
-        return f'{self.get_type_display()} - {hour_start} - {hour_finish}'
+        cant = self.get_quantity_dogs()
+        return f'{self.get_type_display()} - {self.date} - {hour_start} | {cant} dogs | walker: {self.walker}'
