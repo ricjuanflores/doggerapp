@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
-//import Loader from '../components/Loader'
-//import Message from '../components/Message'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 
 import {login} from '../actions/userActions'
@@ -20,7 +20,8 @@ function LoginScreen({ location, history }) {
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
     const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
+
+    const { error, loading, userInfo } = userLogin
 
     useEffect(() => {
         if (userInfo) {
@@ -36,7 +37,8 @@ function LoginScreen({ location, history }) {
     return (
         <FormContainer>
             <h1> Ingresar </h1>
-
+            {error && <Message variant='danger'>{error}</Message>}
+            {loading && <Loader />}
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId='email'>
                     <Form.Label>Email Address</Form.Label>
