@@ -127,6 +127,10 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000', #it needs the comma to ensure this is a tuple
+)
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',

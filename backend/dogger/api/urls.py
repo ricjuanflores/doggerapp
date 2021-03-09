@@ -12,21 +12,21 @@ from .views import createReservation, createOffer
 urlpatterns = [
 
     # Login
-    path('users/login', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('users/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
 
     # Profile
-    path('users/profile', getUserProfile, name="users-profile"),
+    path('users/profile/', getUserProfile, name="users-profile"),
     
     # Register
-    path('owner/register', registerOwner, name="owner-register"),
-    path('walker/register', registerWalker, name="walker-register"),
+    path('owner/register/', registerOwner, name="owner-register"),
+    path('walker/register/', registerWalker, name="walker-register"),
 
     # Dogs
-    path('dog/new', createDog, name="create-dog"),
+    path('dog/new/', createDog, name="create-dog"),
     path('dogs/', listDogs, name="list-dog"),
 
     # Service
-    path('service/reservation', createReservation, name="create-reservation"),
-    path('service/offer', createOffer, name="create-offer"),
+    path('service/reservation/', createReservation, name="create-reservation"),
+    path('service/offer/', createOffer, name="create-offer"),
 
 ]
